@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Background Generator</title>
+    <script src="lib/preloadjs-NEXT.min.js"></script>
+    <script src="lib/easeljs-NEXT.combined.js"></script>
+</head>
+<body onload="init();">
+    <div>
+        <canvas id="testCanvas" width="960" height="400"></canvas>
+    </div>
+</body>
+<script>
+    var stage, w, h, loader;
+    var sky, grant, ground, hill, hill2;
+
+    function init() {
+        stage = new createjs.Stage("testCanvas");
+
+        w = stage.canvas.width;
+        h = stage.canvas.height;
+
+        manifest = [
+            {src: "sky.png", id: "sky"},
+            {src: "ground.png", id: "ground"},
+            {src: "tree.png", id: "tree"},
+            {src: "hill1.png", id: "hill"},
+            {src: "hill2.png", id: "hill2"}
+        ];
+
+        loader = new createjs.LoadQueue(false);
+        loader.addEventListener("complete", handleComplete);
+        loader.loadManifest(manifest, true, "./art/");
+    }
+
+    function handleComplete() {
+        sky = new createjs.Shape();
+        sky.graphics.beginBitmapFill(loader.getResult("sky")).drawRect(0, 0, w, h);
+
+        var groundImg = loader.getResult("ground");
+        ground = new createjs.Shape();
+        ground.graphics.beginBitmapFill(groundImg).drawRect(0, 0, w + groundImg.width, groundImg.height);
+        ground.y = h - groundImg.height;
+
+        hill = new createjs.Bitmap(loader.getResult("hill"));
+        hill.setTransform(Math.random() * w, h - hill.image.height * 4 - groundImg.height, 4, 4);
+        hill.alpha = 0.5;
+
+        hill2 = new createjs.Bitmap(loader.getResult("hill2"));
+        hill2.setTransform(Math.random() * w, h - hill2.image.height * 3 - groundImg.height, 3, 3);
+
+        tree = new createjs.Bitmap(loader.getResult("tree"));
+        tree.setTransform(Math.random() * w, h - tree.image.height * 3 - groundImg.height + 21, 3, 3);
+
+        stage.addChild(
+            sky,
+            hill,
+            hill2,
+            ground,
+            tree
+        );
+
+        stage.update();
+
+    }
+</script>
+</html>
