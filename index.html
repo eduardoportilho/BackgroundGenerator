@@ -7,12 +7,13 @@
     <script src="lib/easeljs-NEXT.combined.js"></script>
 </head>
 <body onload="init();">
-    <div>
+    <div id="container">
         <canvas id="testCanvas" width="960" height="400"></canvas>
     </div>
+    <a id="download">Download as image</a>
 </body>
 <script>
-    var stage, w, h, loader;
+    var stage, w, h, loader, x;
     var sky, grant, ground, hill, hill2;
 
     function init() {
@@ -26,6 +27,7 @@
             {src: "ground.png", id: "ground"},
             {src: "tree.png", id: "tree"},
             {src: "hill1.png", id: "hill"},
+            {src: "bush.png", id: "bush "},
             {src: "hill2.png", id: "hill2"}
         ];
 
@@ -44,14 +46,17 @@
         ground.y = h - groundImg.height;
 
         hill = new createjs.Bitmap(loader.getResult("hill"));
-        hill.setTransform(Math.random() * w, h - hill.image.height * 4 - groundImg.height, 4, 4);
+        x =(Math.random() * (w - hill.image.width));
+        hill.setTransform(x, h - hill.image.height * 1 - groundImg.height, 1, 1);
         hill.alpha = 0.5;
 
         hill2 = new createjs.Bitmap(loader.getResult("hill2"));
-        hill2.setTransform(Math.random() * w, h - hill2.image.height * 3 - groundImg.height, 3, 3);
+        x =  (Math.random() * (w-hill2.image.width));
+        hill2.setTransform(x, h - hill2.image.height * 1 - groundImg.height, 1, 1);
 
         tree = new createjs.Bitmap(loader.getResult("tree"));
-        tree.setTransform(Math.random() * w, h - tree.image.height * 3 - groundImg.height + 21, 3, 3);
+        x =  (Math.random() * (w-tree.image.width));
+        tree.setTransform(x, h - tree.image.height * 1 - groundImg.height + 9, 1, 1);
 
         stage.addChild(
             sky,
@@ -63,6 +68,11 @@
 
         stage.update();
 
+//        var link = document.getElementById('download');
+//        link.href = document.getElementById('testCanvas').toDataURL();
+//        link.download = 'bg.png';
+
+        window.location = stage.toDataURL();
     }
 </script>
 </html>
